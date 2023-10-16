@@ -10,6 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+      <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -50,7 +51,7 @@
           <OutputName>project</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\Listings\</ListingPath>
@@ -255,17 +256,17 @@
                 <Size>0x0</Size>
               </XRAM>
               <OCR_RVCT1>
-                <Type>0</Type>
+                <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT1>
               <OCR_RVCT2>
-                <Type>0</Type>
+                <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT2>
               <OCR_RVCT3>
-                <Type>0</Type>
+                <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT3>
@@ -275,7 +276,7 @@
                 <Size>0x10000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
-                <Type>0</Type>
+                <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
               </OCR_RVCT5>
@@ -377,6 +378,38 @@
       <Groups>
         <Group>
           <GroupName>Source Group 1</GroupName>
+          <Files>
+            <File>
+              <FileName>at32f421_wk_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\at32f421_wk_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>at32f421_int.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\at32f421_int.h</FilePath>
+            </File>
+            <File>
+              <FileName>at32f421_wk_config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\at32f421_wk_config.c</FilePath>
+            </File>
+            <File>
+              <FileName>at32f421_int.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\at32f421_int.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>at32f421_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\at32f421_conf.h</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
@@ -433,6 +466,12 @@
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
+      <component Cclass="Device" Cgroup="at32f421_firmware_library" Csub="wdt" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F421 STDPERIPHERALS CRM">
+        <package name="AT32F421_DFP" schemaVersion="1.2" vendor="ArteryTek" version="2.0.5"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
       <component Cclass="Device" Cgroup="startup" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F421">
         <package name="AT32F421_DFP" schemaVersion="1.2" vendor="ArteryTek" version="2.0.5"/>
         <targetInfos>
@@ -484,6 +523,14 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f421_tmr.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F421F8P7\at32f421_tmr.c</instance>
         <component Cclass="Device" Cgroup="at32f421_firmware_library" Csub="tmr" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F421 STDPERIPHERALS CRM"/>
+        <package name="AT32F421_DFP" schemaVersion="1.2" vendor="ArteryTek" version="2.0.5"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f421_wdt.c" version="2.0.0">
+        <instance index="0">RTE\Device\-AT32F421F8P7\at32f421_wdt.c</instance>
+        <component Cclass="Device" Cgroup="at32f421_firmware_library" Csub="wdt" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F421 STDPERIPHERALS CRM"/>
         <package name="AT32F421_DFP" schemaVersion="1.2" vendor="ArteryTek" version="2.0.5"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
