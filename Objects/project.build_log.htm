@@ -5,10 +5,10 @@
 <h2>Tool Versions:</h2>
 IDE-Version: µVision V5.24.2.0
 Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: vl sv, gd, LIC=----
+License Information: vl sv, gd, LIC=3UUPC-7X5QZ-PG07L-02HI4-LT25N-C33AD
  
 Tool Versions:
-Toolchain:       MDK-Lite  Version: 5.24.1
+Toolchain:       MDK-ARM Professional  Version: 5.24.1
 Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
 C Compiler:      Armcc.exe V5.06 update 5 (build 528)
 Assembler:       Armasm.exe V5.06 update 5 (build 528)
@@ -17,7 +17,7 @@ Library Manager: ArmAr.exe V5.06 update 5 (build 528)
 Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
 CPU DLL:         SARMCM3.DLL V5.24.1
 Dialog DLL:      DCM.DLL V1.16.0.0
-Target DLL:      UL2CM3.DLL V1.160.3.0
+Target DLL:      CMSIS_AGDI.dll V1.28.3.0
 Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
@@ -27,24 +27,31 @@ Project File Date:  10/12/2023
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Target 1'
-compiling at32f421_wk_config.c...
-compiling main.c...
 compiling at32f421_int.c...
 at32f421_int.h(70): warning:  #1295-D: Deprecated declaration ms_20_tick - give arg types
   void ms_20_tick();
 at32f421_int.c: 1 warning, 0 errors
+compiling at32f421_wk_config.c...
+compiling main.c...
+main.c(146): warning:  #9-D: nested comment is not allowed
+  		//*/
+main.c(131): warning:  #550-D: variable "in1_pin_high"  was set but never used
+  	static int in1_pin_high;
+main.c(132): warning:  #550-D: variable "in2_pin_high"  was set but never used
+  	static int in2_pin_high;
+main.c: 3 warnings, 0 errors
 compiling at32f421_adc.c...
-compiling at32f421_gpio.c...
 compiling at32f421_crm.c...
 compiling at32f421_misc.c...
+compiling at32f421_gpio.c...
+assembling startup_at32f421.s...
 compiling at32f421_wdt.c...
 compiling at32f421_tmr.c...
-assembling startup_at32f421.s...
 compiling system_at32f421.c...
 linking...
-Program Size: Code=2552 RO-data=252 RW-data=4 ZI-data=1636  
+Program Size: Code=2756 RO-data=252 RW-data=24 ZI-data=1632  
 FromELF: creating hex file...
-".\Objects\project.axf" - 0 Error(s), 1 Warning(s).
+".\Objects\project.axf" - 0 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -77,9 +84,9 @@ Package Vendor: ArteryTek
 <h2>Collection of Component Files used:</h2>
 
    * Component: ArteryTek::Device:startup:2.0.0
+      Source file:   Device\Source\ARM\startup_at32f421.s
       Source file:   Device\Source\system_at32f421.c
       Include file:  Device\Include\at32f421.h
-      Source file:   Device\Source\ARM\startup_at32f421.s
 
    * Component: ArteryTek::Device:at32f421_firmware_library:wdt:2.0.0
       Source file:   Device\Firmware\Peripherals\src\at32f421_wdt.c
@@ -94,8 +101,8 @@ Package Vendor: ArteryTek
       Source file:   Device\Firmware\Peripherals\src\at32f421_misc.c
 
    * Component: ArteryTek::Device:at32f421_firmware_library:gpio:2.0.0
-      Source file:   Device\Firmware\Peripherals\src\at32f421_gpio.c
       Include file:  Device\Firmware\Peripherals\inc\at32f421_gpio.h
+      Source file:   Device\Firmware\Peripherals\src\at32f421_gpio.c
 
    * Component: ArteryTek::Device:at32f421_firmware_library:crm:2.0.0
       Include file:  Device\Firmware\Peripherals\inc\at32f421_crm.h
@@ -109,7 +116,7 @@ Package Vendor: ArteryTek
       Include file:  Device\Include\at32f421_conf.h
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:07
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

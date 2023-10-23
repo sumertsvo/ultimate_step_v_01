@@ -56,7 +56,7 @@
 
 /* private variables ---------------------------------------------------------*/
 /* add user code begin private variables */
-
+static int out_pin_high;
 
 
 /* add user code end private variables */
@@ -65,6 +65,9 @@
 /* add user code begin function prototypes */
 	void ms_20_tick()
 	{	
+	//	tmr_interrupt_enable(TMR6,TMR_OVF_INT,FALSE);
+		if (out_pin_high)
+		{
 		if( gpio_output_data_bit_read(PIN_STEP) )
 		{		
 		gpio_bits_reset(PIN_STEP);
@@ -73,7 +76,7 @@
 			{
 				gpio_bits_set(PIN_STEP);
 			}
-		
+		}
 	}
 /* add user code end function prototypes */
 
@@ -110,7 +113,7 @@ int main(void)
 
   /* init tmr6 function. */
   wk_tmr6_init();
-	tmr_interrupt_enable(TMR6,TMR_OVF_INT,TRUE);
+
 
   /* add user code begin 2 */
 
@@ -121,18 +124,63 @@ int main(void)
 	
 	
 	
+	
+	static int v1_pin_high;
+	static int v2_pin_high;
+	
+	static int in1_pin_high;
+	static int in2_pin_high;
+	
+	
+		tmr_interrupt_enable(TMR6,TMR_OVF_INT,TRUE);
   while(1)
   {
     /* add user code begin 3 */
-		//gpio_bits_set(PIN_V1);
+	
+		/*
+		if (out_pin_high == 0) 
+		{
+			tmr_interrupt_enable(TMR6,TMR_OVF_INT,FALSE);
+		}
+		
+		//*/
 		if (gpio_input_data_bit_read(PIN_OUT) )
 		{
-			tmr_interrupt_enable(TMR6,TMR_OVF_INT,TRUE);
+				nvic_irq_disable(TMR6_GLOBAL_IRQn);
+			 //nvic_irq_enable(TMR6_GLOBAL_IRQn, 2, 3);
+			out_pin_high=1;
 		}
 		else
 		{
-				tmr_interrupt_enable(TMR6,TMR_OVF_INT,FALSE);
+				nvic_irq_enable(TMR6_GLOBAL_IRQn, 2, 3);
+				out_pin_high=0;
+			
 		}
+		
+		v1_pin_high=gpio_input_data_bit_read(PIN_V1);
+		if (v1_pin_high )
+		{
+			in1_pin_high=gpio_input_data_bit_read(PIN_IN1);
+		//	gpio_bits_reset(PIN_V1);
+		}
+		else
+		{
+				gpio_bits_set(PIN_V1);
+		}
+		
+		v2_pin_high=gpio_input_data_bit_read(PIN_V2);
+		if (v2_pin_high)
+		{
+			in2_pin_high=gpio_input_data_bit_read(PIN_IN2);
+		//	gpio_bits_reset(PIN_V2);
+		}
+		else
+		{
+				gpio_bits_set(PIN_V2);
+		}
+		
+		
+		
     /* add user code end 3 */
   }
 }

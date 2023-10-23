@@ -148,7 +148,7 @@ void wk_nvic_config(void)
 {
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
 
-  nvic_irq_enable(TMR6_GLOBAL_IRQn, 0, 0);
+ // nvic_irq_enable(TMR6_GLOBAL_IRQn, 2, 3);
 }
 
 /**
@@ -205,6 +205,9 @@ void wk_tmr6_init(void)
 
   /* configure primary mode settings */
   tmr_primary_mode_select(TMR6, TMR_PRIMARY_SEL_OVERFLOW);
+	
+	  /* configure overflow event */
+  tmr_overflow_request_source_set(TMR6, TRUE);
 
   tmr_counter_enable(TMR6, TRUE);
 
