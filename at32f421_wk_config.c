@@ -146,9 +146,9 @@ void wk_periph_clock_config(void)
   */
 void wk_nvic_config(void)
 {
-  nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
+  //nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
 
- // nvic_irq_enable(TMR6_GLOBAL_IRQn, 2, 3);
+  nvic_irq_enable(TMR6_GLOBAL_IRQn, 2, 3);
 }
 
 /**
@@ -199,18 +199,29 @@ void wk_tmr6_init(void)
   /* add user code end tmr6_init 1 */
 
   /* configure counter settings */
-  tmr_base_init(TMR6, 19999, 0); //19999 for 50hz 20ms 999 for 1khz 1ms
-  tmr_cnt_dir_set(TMR6, TMR_COUNT_UP);
-  tmr_period_buffer_enable(TMR6, FALSE);
+	
+ 
 
+	tmr_base_init(TMR6, 19999, 0); //19999 for 50hz 20ms 999 for 1khz 1ms
+ 
+	
+  tmr_period_buffer_enable(TMR6, FALSE);
+	//tmr_channel_buffer_enable(TMR6,FALSE);///
+	
+	tmr_one_cycle_mode_enable(TMR6,FALSE);
+	
+	
   /* configure primary mode settings */
-  tmr_primary_mode_select(TMR6, TMR_PRIMARY_SEL_OVERFLOW);
+	
+ // tmr_primary_mode_select(TMR6, TMR_PRIMARY_SEL_OVERFLOW);
 	
 	  /* configure overflow event */
   tmr_overflow_request_source_set(TMR6, TRUE);
 
-  tmr_counter_enable(TMR6, TRUE);
+	tmr_overflow_event_disable(TMR6,FALSE);
 
+	
+	
   /**
    * Users need to configure TMR6 interrupt functions according to the actual application.
    * 1. Call the below function to enable the corresponding TMR6 interrupt.
@@ -219,7 +230,9 @@ void wk_tmr6_init(void)
    *     --void TMR6_GLOBAL_IRQHandler(void)
    */
 
-  /* add user code begin tmr6_init 2 */
+  /* add user code begin tmr6_init 2 */  
+
+  //  tmr_counter_enable(TMR6,TRUE);
 
   /* add user code end tmr6_init 2 */
 }

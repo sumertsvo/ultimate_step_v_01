@@ -58,25 +58,22 @@
 /* add user code begin private variables */
 static int out_pin_high;
 
+static uint32_t counter;
 
 /* add user code end private variables */
 
 /* private function prototypes --------------------------------------------*/
 /* add user code begin function prototypes */
-	void ms_20_tick()
+	void ms_20_tick(void)
 	{	
+		
+	
 	//	tmr_interrupt_enable(TMR6,TMR_OVF_INT,FALSE);
-		if (out_pin_high)
-		{
-		if( gpio_output_data_bit_read(PIN_STEP) )
-		{		
-		gpio_bits_reset(PIN_STEP);
-		}
-		else
-			{
-				gpio_bits_set(PIN_STEP);
-			}
-		}
+		counter++;
+		
+		gpio_bits_set(PIN_STEP);
+		tmr_flag_clear(TMR6,TMR_OVF_FLAG);
+
 	}
 /* add user code end function prototypes */
 
@@ -119,7 +116,7 @@ int main(void)
 
   /* add user code end 2 */
 
-	gpio_bits_set(PIN_DIR);
+	gpio_bits_reset(PIN_DIR);
 	gpio_bits_set(PIN_SLEEP);
 	
 	
@@ -131,31 +128,47 @@ int main(void)
 	static int in1_pin_high;
 	static int in2_pin_high;
 	
+	static int motor_divider;
 	
-		tmr_interrupt_enable(TMR6,TMR_OVF_INT,TRUE);
+	motor_divider=4096;//TODO why??? from 2256 443hz up to 1232 800hz
+	tmr_interrupt_enable(TMR6,TMR_OVF_INT,TRUE);
+	
+	
   while(1)
   {
     /* add user code begin 3 */
 	
-		/*
-		if (out_pin_high == 0) 
-		{
-			tmr_interrupt_enable(TMR6,TMR_OVF_INT,FALSE);
-		}
+	  gpio_bits_reset(PIN_STEP);
 		
-		//*/
+		tmr_period_value_set(TMR6,motor_divider);
+		
+		tmr_counter_enable(TMR6,TRUE);
+		
+		
+		
 		if (gpio_input_data_bit_read(PIN_OUT) )
 		{
-				nvic_irq_disable(TMR6_GLOBAL_IRQn);
-			 //nvic_irq_enable(TMR6_GLOBAL_IRQn, 2, 3);
+			//tmr_counter_enable(TMR6,FALSE);
+			if (out_pin_high == 0)
+			{
+			gpio_bits_set(PIN_V2);
+				gpio_bits_set(PIN_DIR);
 			out_pin_high=1;
+			}
 		}
 		else
 		{
-				nvic_irq_enable(TMR6_GLOBAL_IRQn, 2, 3);
-				out_pin_high=0;
 			
+			if (out_pin_high == 1)
+			{
+			
+			gpio_bits_set(PIN_V1);
+				gpio_bits_reset(PIN_DIR);
+			out_pin_high=0;
+			}
 		}
+		
+		
 		
 		v1_pin_high=gpio_input_data_bit_read(PIN_V1);
 		if (v1_pin_high )
@@ -165,7 +178,7 @@ int main(void)
 		}
 		else
 		{
-				gpio_bits_set(PIN_V1);
+				//gpio_bits_set(PIN_V1);
 		}
 		
 		v2_pin_high=gpio_input_data_bit_read(PIN_V2);
@@ -176,7 +189,12 @@ int main(void)
 		}
 		else
 		{
-				gpio_bits_set(PIN_V2);
+				//gpio_bits_set(PIN_V2);
+		}
+		
+		if (in1_pin_high || in2_pin_high)
+		{
+			tmr_counter_enable(TMR6,TRUE);
 		}
 		
 		

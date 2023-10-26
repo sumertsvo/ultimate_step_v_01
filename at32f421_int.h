@@ -67,7 +67,7 @@ void PendSV_Handler(void);
 
 void TMR6_GLOBAL_IRQHandler(void);
 /* add user code begin exported functions */
-void ms_20_tick();
+void ms_20_tick(void);
 /* add user code end exported functions */
 
 #ifdef __cplusplus

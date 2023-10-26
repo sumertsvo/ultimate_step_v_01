@@ -28,30 +28,20 @@ Project File Date:  10/12/2023
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Target 1'
 compiling at32f421_int.c...
-at32f421_int.h(70): warning:  #1295-D: Deprecated declaration ms_20_tick - give arg types
-  void ms_20_tick();
-at32f421_int.c: 1 warning, 0 errors
-compiling at32f421_wk_config.c...
 compiling main.c...
-main.c(146): warning:  #9-D: nested comment is not allowed
-  		//*/
-main.c(131): warning:  #550-D: variable "in1_pin_high"  was set but never used
-  	static int in1_pin_high;
-main.c(132): warning:  #550-D: variable "in2_pin_high"  was set but never used
-  	static int in2_pin_high;
-main.c: 3 warnings, 0 errors
+compiling at32f421_wk_config.c...
 compiling at32f421_adc.c...
 compiling at32f421_crm.c...
-compiling at32f421_misc.c...
 compiling at32f421_gpio.c...
-assembling startup_at32f421.s...
+compiling at32f421_misc.c...
 compiling at32f421_wdt.c...
 compiling at32f421_tmr.c...
+assembling startup_at32f421.s...
 compiling system_at32f421.c...
 linking...
-Program Size: Code=2756 RO-data=252 RW-data=24 ZI-data=1632  
+Program Size: Code=2704 RO-data=252 RW-data=32 ZI-data=1632  
 FromELF: creating hex file...
-".\Objects\project.axf" - 0 Error(s), 4 Warning(s).
+".\Objects\project.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -84,25 +74,25 @@ Package Vendor: ArteryTek
 <h2>Collection of Component Files used:</h2>
 
    * Component: ArteryTek::Device:startup:2.0.0
-      Source file:   Device\Source\ARM\startup_at32f421.s
-      Source file:   Device\Source\system_at32f421.c
       Include file:  Device\Include\at32f421.h
+      Source file:   Device\Source\system_at32f421.c
+      Source file:   Device\Source\ARM\startup_at32f421.s
 
    * Component: ArteryTek::Device:at32f421_firmware_library:wdt:2.0.0
-      Source file:   Device\Firmware\Peripherals\src\at32f421_wdt.c
       Include file:  Device\Firmware\Peripherals\inc\at32f421_wdt.h
+      Source file:   Device\Firmware\Peripherals\src\at32f421_wdt.c
 
    * Component: ArteryTek::Device:at32f421_firmware_library:tmr:2.0.0
       Source file:   Device\Firmware\Peripherals\src\at32f421_tmr.c
       Include file:  Device\Firmware\Peripherals\inc\at32f421_tmr.h
 
    * Component: ArteryTek::Device:at32f421_firmware_library:misc:2.0.0
-      Include file:  Device\Firmware\Peripherals\inc\at32f421_misc.h
       Source file:   Device\Firmware\Peripherals\src\at32f421_misc.c
+      Include file:  Device\Firmware\Peripherals\inc\at32f421_misc.h
 
    * Component: ArteryTek::Device:at32f421_firmware_library:gpio:2.0.0
-      Include file:  Device\Firmware\Peripherals\inc\at32f421_gpio.h
       Source file:   Device\Firmware\Peripherals\src\at32f421_gpio.c
+      Include file:  Device\Firmware\Peripherals\inc\at32f421_gpio.h
 
    * Component: ArteryTek::Device:at32f421_firmware_library:crm:2.0.0
       Include file:  Device\Firmware\Peripherals\inc\at32f421_crm.h
@@ -116,7 +106,7 @@ Package Vendor: ArteryTek
       Include file:  Device\Include\at32f421_conf.h
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>
