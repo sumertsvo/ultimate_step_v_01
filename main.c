@@ -56,20 +56,37 @@
 
 /* private variables ---------------------------------------------------------*/
 /* add user code begin private variables */
-static int out_pin_high;
+static int out_pin_high = 0;
 
-static uint32_t counter;
+static int32_t counter = 0;
+
+
+char calibration_on = 1;
 
 /* add user code end private variables */
 
 /* private function prototypes --------------------------------------------*/
 /* add user code begin function prototypes */
+void count()
+{
+	if (out_pin_high)
+	{		
+		--counter;
+	}
+	
+	else
+	{
+		++counter;
+	//if (counter & (1<<1) == 0 ){allow_stop=1}
+	}
+}
+
 	void ms_20_tick(void)
 	{	
 		
 	
 	//	tmr_interrupt_enable(TMR6,TMR_OVF_INT,FALSE);
-		counter++;
+		count();
 		
 		gpio_bits_set(PIN_STEP);
 		tmr_flag_clear(TMR6,TMR_OVF_FLAG);
@@ -82,11 +99,25 @@ static uint32_t counter;
 
 /* add user code end 0 */
 
-/**
-  * @brief main function.
-  * @param  none
-  * @retval none
-  */
+void get_out()
+{
+	static char buf;
+	buf = buf << 1;
+	if (gpio_input_data_bit_read(PIN_OUT)==1)
+	{
+	buf |= (1<<0);
+	}
+	else 
+	{
+	buf &= ~(1<<0);
+	}
+	if (buf==0)
+	out_pin_high = 0;
+	if (buf ==  255)
+	out_pin_high =1;
+}
+	
+	
 int main(void)
 {
   /* add user code begin 1 */
@@ -119,18 +150,19 @@ int main(void)
 	gpio_bits_reset(PIN_DIR);
 	gpio_bits_set(PIN_SLEEP);
 	
+	gpio_bits_set(PIN_V2);
+	gpio_bits_set(PIN_V1);
 	
 	
+	static int v1_pin_high = 0;
+	static int v2_pin_high = 0;
 	
-	static int v1_pin_high;
-	static int v2_pin_high;
+	static int in1_pin_high = 0;
+	static int in2_pin_high = 0;
 	
-	static int in1_pin_high;
-	static int in2_pin_high;
+	static int motor_divider = 0;
 	
-	static int motor_divider;
-	
-	motor_divider=4096;//TODO why??? from 2256 443hz up to 1232 800hz
+	motor_divider=4096;
 	tmr_interrupt_enable(TMR6,TMR_OVF_INT,TRUE);
 	
 	
@@ -142,60 +174,77 @@ int main(void)
 		
 		tmr_period_value_set(TMR6,motor_divider);
 		
-		tmr_counter_enable(TMR6,TRUE);
+		//tmr_counter_enable(TMR6,TRUE);
 		
 		
 		
-		if (gpio_input_data_bit_read(PIN_OUT) )
-		{
-			//tmr_counter_enable(TMR6,FALSE);
-			if (out_pin_high == 0)
-			{
-			gpio_bits_set(PIN_V2);
-				gpio_bits_set(PIN_DIR);
-			out_pin_high=1;
-			}
-		}
-		else
-		{
-			
-			if (out_pin_high == 1)
-			{
-			
-			gpio_bits_set(PIN_V1);
-				gpio_bits_reset(PIN_DIR);
-			out_pin_high=0;
-			}
-		}
 		
 		
-		
+		get_out();
 		v1_pin_high=gpio_input_data_bit_read(PIN_V1);
-		if (v1_pin_high )
+		v2_pin_high=gpio_input_data_bit_read(PIN_V2);
+		
+		//if (gpio_input_data_bit_read(PIN_OUT) )
+	//	{
+			//tmr_counter_enable(TMR6,FALSE);
+		
+		
+		
+			if (v1_pin_high   )
 		{
 			in1_pin_high=gpio_input_data_bit_read(PIN_IN1);
-		//	gpio_bits_reset(PIN_V1);
+	
 		}
-		else
-		{
-				//gpio_bits_set(PIN_V1);
-		}
+
 		
-		v2_pin_high=gpio_input_data_bit_read(PIN_V2);
+		
 		if (v2_pin_high)
 		{
 			in2_pin_high=gpio_input_data_bit_read(PIN_IN2);
-		//	gpio_bits_reset(PIN_V2);
-		}
-		else
-		{
-				//gpio_bits_set(PIN_V2);
+		
 		}
 		
-		if (in1_pin_high || in2_pin_high)
-		{
-			tmr_counter_enable(TMR6,TRUE);
-		}
+		
+		
+			if (out_pin_high == 0)
+			{
+			//	current_target=opened;
+				
+				if (in1_pin_high==0) 
+				{
+						gpio_bits_set(PIN_SLEEP);
+				tmr_counter_enable(TMR6,TRUE);
+				}
+				else
+				{	
+					tmr_counter_enable(TMR6,FALSE);
+					gpio_bits_reset(PIN_SLEEP);
+				}
+				
+			
+				gpio_bits_set(PIN_DIR);
+			}
+		else
+			{
+				//current_target=closed;
+			
+				if(in2_pin_high==0)
+				{
+						gpio_bits_set(PIN_SLEEP);
+				tmr_counter_enable(TMR6,TRUE);
+				}
+				else
+				{
+					tmr_counter_enable(TMR6,FALSE);
+						gpio_bits_reset(PIN_SLEEP);
+				}
+				gpio_bits_reset(PIN_DIR);
+			}
+		
+		
+		
+		
+	
 		
 		
 		
