@@ -29,19 +29,22 @@ Project File Date:  11/13/2023
 Rebuild target 'Target 1'
 compiling at32f421_int.c...
 compiling at32f421_wk_config.c...
-compiling at32f421_adc.c...
+compiling main.c...
+main.c(233): warning:  #550-D: variable "counter2"  was set but never used
+  		int32_t counter2;
+main.c: 1 warning, 0 errors
 compiling at32f421_crm.c...
+compiling at32f421_adc.c...
 compiling at32f421_misc.c...
 compiling at32f421_gpio.c...
-compiling main.c...
 assembling startup_at32f421.s...
-compiling at32f421_tmr.c...
 compiling at32f421_wdt.c...
 compiling system_at32f421.c...
+compiling at32f421_tmr.c...
 linking...
-Program Size: Code=2860 RO-data=252 RW-data=36 ZI-data=1636  
+Program Size: Code=2984 RO-data=252 RW-data=48 ZI-data=1632  
 FromELF: creating hex file...
-".\Objects\project.axf" - 0 Error(s), 0 Warning(s).
+".\Objects\project.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -74,25 +77,25 @@ Package Vendor: ArteryTek
 <h2>Collection of Component Files used:</h2>
 
    * Component: ArteryTek::Device:startup:2.0.0
+      Source file:   Device\Source\system_at32f421.c
       Source file:   Device\Source\ARM\startup_at32f421.s
       Include file:  Device\Include\at32f421.h
-      Source file:   Device\Source\system_at32f421.c
 
    * Component: ArteryTek::Device:at32f421_firmware_library:wdt:2.0.0
-      Include file:  Device\Firmware\Peripherals\inc\at32f421_wdt.h
       Source file:   Device\Firmware\Peripherals\src\at32f421_wdt.c
+      Include file:  Device\Firmware\Peripherals\inc\at32f421_wdt.h
 
    * Component: ArteryTek::Device:at32f421_firmware_library:tmr:2.0.0
-      Include file:  Device\Firmware\Peripherals\inc\at32f421_tmr.h
       Source file:   Device\Firmware\Peripherals\src\at32f421_tmr.c
+      Include file:  Device\Firmware\Peripherals\inc\at32f421_tmr.h
 
    * Component: ArteryTek::Device:at32f421_firmware_library:misc:2.0.0
-      Include file:  Device\Firmware\Peripherals\inc\at32f421_misc.h
       Source file:   Device\Firmware\Peripherals\src\at32f421_misc.c
+      Include file:  Device\Firmware\Peripherals\inc\at32f421_misc.h
 
    * Component: ArteryTek::Device:at32f421_firmware_library:gpio:2.0.0
-      Source file:   Device\Firmware\Peripherals\src\at32f421_gpio.c
       Include file:  Device\Firmware\Peripherals\inc\at32f421_gpio.h
+      Source file:   Device\Firmware\Peripherals\src\at32f421_gpio.c
 
    * Component: ArteryTek::Device:at32f421_firmware_library:crm:2.0.0
       Source file:   Device\Firmware\Peripherals\src\at32f421_crm.c
@@ -106,7 +109,7 @@ Package Vendor: ArteryTek
       Include file:  Device\Include\at32f421_conf.h
 
    * Component: ARM::CMSIS:CORE:5.0.1
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

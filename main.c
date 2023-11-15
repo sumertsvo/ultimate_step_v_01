@@ -60,8 +60,23 @@ static int out_pin_high = 0;
 
 static int32_t counter = 0;
 
+uint32_t tccount=450000;
+static uint32_t tc =0;
+char inv =0;
 
 char calibration_on = 1;
+
+ typedef enum _state_t
+{
+	wait,
+	open,
+	close,
+	opening,
+	closing	
+} state_t;
+
+state_t currentState;
+state_t aimState;
 
 /* add user code end private variables */
 
@@ -69,6 +84,8 @@ char calibration_on = 1;
 /* add user code begin function prototypes */
 void count()
 {
+
+	
 	if (out_pin_high)
 	{		
 		--counter;
@@ -87,8 +104,14 @@ void count()
 	
 	//	tmr_interrupt_enable(TMR6,TMR_OVF_INT,FALSE);
 		count();
-		
-		gpio_bits_set(PIN_STEP);
+		if (gpio_input_data_bit_read(PIN_STEP))
+			{
+			gpio_bits_reset(PIN_STEP);
+			}
+			else
+				{
+				gpio_bits_set(PIN_STEP);
+				}
 		tmr_flag_clear(TMR6,TMR_OVF_FLAG);
 
 	}
@@ -103,7 +126,7 @@ void get_out()
 {
 	static char buf;
 	buf = buf << 1;
-	if (gpio_input_data_bit_read(PIN_OUT)==1)
+	if (gpio_input_data_bit_read(PIN_OUT)==inv)
 	{
 	buf |= (1<<0);
 	}
@@ -111,12 +134,23 @@ void get_out()
 	{
 	buf &= ~(1<<0);
 	}
+	
 	if (buf==0)
 	out_pin_high = 0;
+	
 	if (buf ==  255)
 	out_pin_high =1;
+	
+	
 }
 	
+void work()
+{
+	if (currentState != aimState)
+	{
+		
+	}
+}
 	
 int main(void)
 {
@@ -162,16 +196,15 @@ int main(void)
 	
 	static int motor_divider = 0;
 	
-	motor_divider=4096;
+	motor_divider=3500;
 	tmr_interrupt_enable(TMR6,TMR_OVF_INT,TRUE);
 	
-	
+	currentState= wait;
   while(1)
   {
     /* add user code begin 3 */
 	
-	  gpio_bits_reset(PIN_STEP);
-		
+
 		tmr_period_value_set(TMR6,motor_divider);
 		
 		//tmr_counter_enable(TMR6,TRUE);
@@ -204,12 +237,12 @@ int main(void)
 		
 		}
 		
-		
+		int32_t counter2;
 		
 			if (out_pin_high == 0)
 			{
 			//	current_target=opened;
-				
+				//posit
 				if (in1_pin_high==0) 
 				{
 						gpio_bits_set(PIN_SLEEP);
@@ -217,8 +250,14 @@ int main(void)
 				}
 				else
 				{	
+					counter2=(counter & ((1<<0)| (1<<1)) );
+				//	if  ( counter2== 0 )
+					{
 					tmr_counter_enable(TMR6,FALSE);
+						  gpio_bits_reset(PIN_STEP);
+		
 					gpio_bits_reset(PIN_SLEEP);
+					}
 				}
 				
 			
@@ -228,15 +267,21 @@ int main(void)
 			{
 				//current_target=closed;
 			
-				if(in2_pin_high==0)
+				if (in2_pin_high==0)
 				{
 						gpio_bits_set(PIN_SLEEP);
 				tmr_counter_enable(TMR6,TRUE);
 				}
 				else
 				{
+					counter2=(counter & ((1<<0)| (1<<1)) );
+					//if  (counter2 == 0)
+					{
 					tmr_counter_enable(TMR6,FALSE);
+						  gpio_bits_reset(PIN_STEP);
+		
 						gpio_bits_reset(PIN_SLEEP);
+					}
 				}
 				gpio_bits_reset(PIN_DIR);
 			}
@@ -244,7 +289,15 @@ int main(void)
 		
 		
 		
-	
+	tc++;
+	if (tc>tccount)
+	{
+		tc=0;
+		if (inv)
+			inv=0;
+		else
+			inv=1;
+	}
 		
 		
 		
